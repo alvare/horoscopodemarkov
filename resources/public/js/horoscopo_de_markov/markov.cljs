@@ -1,9 +1,7 @@
 (ns horoscopo-de-markov.markov)
 
-(defn tokenize-str
-  [s]
-  "Split the string s into words (strings of non-whitespace characters)"
-  (re-seq #"\S+" s))
+(defn join [with what]
+  (.join (clj->js what) with))
 
 (defn build-markov-model
   [tokens prefix-length]
@@ -26,3 +24,29 @@
     (let [next-word (rand-nth suffixes)]
       (cons (first prefix) (lazy-seq (build-markov-chain model (concat (rest prefix) [next-word])))))
     prefix))
+
+(defn build-markov-model-sentence
+  [tokens prefix-length]
+  (letfn [(build-model
+           [accum token-groups]
+           (if (seq token-groups)
+             (let [g (first token-groups)
+                   pfx (take prefix-length g)
+                   sfx (get g prefix-length)
+                   heads (:heads accum)
+                   bodys (:body accum)]
+               (do (.log js/console (clj->js g))
+               (recur {:heads (assoc heads pfx (conj (get heads pfx []) sfx))
+                       :bodys (merge-with conj bodys (build-markov-model (rest g) prefix-length))}
+                      (next token-groups))))
+             accum))]
+    (build-model {:heads {} :bodys {}} (seq tokens))))
+
+(defn tokenize-str [s]
+  (map (partial re-seq #"\S+") (re-seq #"[^.]*\." s)))
+
+(defn generate
+  [tokens prefix-length length prefix]
+  (let [model (build-markov-model tokens prefix-length)
+        chain (build-markov-chain model prefix)]
+    (join " " chain)))
