@@ -4,11 +4,9 @@
 (def geminis "La Luna continúa en tránsito por el signo de Virgo, mientras los planetas Venus y Júpiter siguen retrógrados. La Luna es gay.")
 
 (.write js/document
-  (let [tokens (tokenize-str geminis)
-        prefix-length 2
-        length 40
+  (let [tokens (tokenize-str js/GEMINIS)
+        prefix-length 3
         model (build-markov-model-sentence tokens prefix-length)
         prefix (:head model)
         chain (build-markov-chain-sentence model)]
-    (.log js/console (clj->js chain))))
-    ;(join " " chain)))
+    (join " " (flatten (take 5 chain)))))

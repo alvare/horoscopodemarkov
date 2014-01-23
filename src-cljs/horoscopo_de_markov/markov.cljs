@@ -32,11 +32,11 @@
            (if (seq token-groups)
              (let [g (first token-groups)
                    pfx (take prefix-length g)
-                   sfx (nth g prefix-length)
+                   sfx (nth g prefix-length "")
                    heads (:heads accum)
                    bodys (:bodys accum)]
                (recur {:heads (assoc heads pfx (conj (get heads pfx []) sfx))
-                       :bodys (merge-with conj bodys (build-markov-model (rest g) prefix-length))}
+                       :bodys (merge-with conj bodys (build-markov-model g prefix-length))}
                       (next token-groups)))
              accum))]
     (build-model {:heads {} :bodys {}} (seq tokens))))
@@ -45,9 +45,8 @@
   [model]
   (let [prefix (rand-nth (keys (:heads model)))
         others (dissoc (:heads model) prefix)]
-    (do
-      (.log js/console (clj->js model))
-      (cons (build-markov-chain (:bodys model) prefix) '())))) ;(lazy-seq (build-markov-chain-sentence {:heads others :bodys (:bodys model)})))))
+    (do 
+    (cons (build-markov-chain (:bodys model) prefix) (lazy-seq (build-markov-chain-sentence {:heads others :bodys (:bodys model)}))))))
 
 (defn tokenize-str [s]
   (map (partial re-seq #"\S+") (re-seq #"[^.]*\." s)))

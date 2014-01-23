@@ -6,10 +6,10 @@ horoscopo_de_markov.markov.join = (function join(with$,what){return cljs.core.cl
 horoscopo_de_markov.markov.build_markov_model = (function build_markov_model(tokens,prefix_length){var build_model = (function build_model(accum,token_groups){while(true){
 if(cljs.core.seq.call(null,token_groups))
 {var g = cljs.core.first.call(null,token_groups);var pfx = cljs.core.drop_last.call(null,g);var sfx = cljs.core.last.call(null,g);{
-var G__4779 = cljs.core.assoc.call(null,accum,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,accum,pfx,cljs.core.PersistentVector.EMPTY),sfx));
-var G__4780 = cljs.core.next.call(null,token_groups);
-accum = G__4779;
-token_groups = G__4780;
+var G__4802 = cljs.core.assoc.call(null,accum,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,accum,pfx,cljs.core.PersistentVector.EMPTY),sfx));
+var G__4803 = cljs.core.next.call(null,token_groups);
+accum = G__4802;
+token_groups = G__4803;
 continue;
 }
 } else
@@ -29,11 +29,11 @@ horoscopo_de_markov.markov.build_markov_chain = (function build_markov_chain(mod
 });
 horoscopo_de_markov.markov.build_markov_model_sentence = (function build_markov_model_sentence(tokens,prefix_length){var build_model = (function build_model(accum,token_groups){while(true){
 if(cljs.core.seq.call(null,token_groups))
-{var g = cljs.core.first.call(null,token_groups);var pfx = cljs.core.take.call(null,prefix_length,g);var sfx = cljs.core.nth.call(null,g,prefix_length);var heads = new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(accum);var bodys = new cljs.core.Keyword(null,"bodys","bodys",1107816067).cljs$core$IFn$_invoke$arity$1(accum);{
-var G__4781 = new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"heads","heads",1113055749),cljs.core.assoc.call(null,heads,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,heads,pfx,cljs.core.PersistentVector.EMPTY),sfx)),new cljs.core.Keyword(null,"bodys","bodys",1107816067),cljs.core.merge_with.call(null,cljs.core.conj,bodys,horoscopo_de_markov.markov.build_markov_model.call(null,cljs.core.rest.call(null,g),prefix_length))], null);
-var G__4782 = cljs.core.next.call(null,token_groups);
-accum = G__4781;
-token_groups = G__4782;
+{var g = cljs.core.first.call(null,token_groups);var pfx = cljs.core.take.call(null,prefix_length,g);var sfx = cljs.core.nth.call(null,g,prefix_length,"");var heads = new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(accum);var bodys = new cljs.core.Keyword(null,"bodys","bodys",1107816067).cljs$core$IFn$_invoke$arity$1(accum);{
+var G__4804 = new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"heads","heads",1113055749),cljs.core.assoc.call(null,heads,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,heads,pfx,cljs.core.PersistentVector.EMPTY),sfx)),new cljs.core.Keyword(null,"bodys","bodys",1107816067),cljs.core.merge_with.call(null,cljs.core.conj,bodys,horoscopo_de_markov.markov.build_markov_model.call(null,g,prefix_length))], null);
+var G__4805 = cljs.core.next.call(null,token_groups);
+accum = G__4804;
+token_groups = G__4805;
 continue;
 }
 } else
@@ -44,8 +44,8 @@ break;
 });
 return build_model.call(null,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"heads","heads",1113055749),cljs.core.PersistentArrayMap.EMPTY,new cljs.core.Keyword(null,"bodys","bodys",1107816067),cljs.core.PersistentArrayMap.EMPTY], null),cljs.core.seq.call(null,tokens));
 });
-horoscopo_de_markov.markov.build_markov_chain_sentence = (function build_markov_chain_sentence(model){var prefix = cljs.core.rand_nth.call(null,cljs.core.keys.call(null,new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(model)));var others = cljs.core.dissoc.call(null,new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(model),prefix);console.log(cljs.core.clj__GT_js.call(null,model));
-return cljs.core.cons.call(null,horoscopo_de_markov.markov.build_markov_chain.call(null,new cljs.core.Keyword(null,"bodys","bodys",1107816067).cljs$core$IFn$_invoke$arity$1(model),prefix),cljs.core.List.EMPTY);
+horoscopo_de_markov.markov.build_markov_chain_sentence = (function build_markov_chain_sentence(model){var prefix = cljs.core.rand_nth.call(null,cljs.core.keys.call(null,new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(model)));var others = cljs.core.dissoc.call(null,new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(model),prefix);return cljs.core.cons.call(null,horoscopo_de_markov.markov.build_markov_chain.call(null,new cljs.core.Keyword(null,"bodys","bodys",1107816067).cljs$core$IFn$_invoke$arity$1(model),prefix),(new cljs.core.LazySeq(null,(function (){return build_markov_chain_sentence.call(null,new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"heads","heads",1113055749),others,new cljs.core.Keyword(null,"bodys","bodys",1107816067),new cljs.core.Keyword(null,"bodys","bodys",1107816067).cljs$core$IFn$_invoke$arity$1(model)], null));
+}),null,null)));
 });
 horoscopo_de_markov.markov.tokenize_str = (function tokenize_str(s){return cljs.core.map.call(null,cljs.core.partial.call(null,cljs.core.re_seq,/\S+/),cljs.core.re_seq.call(null,/[^.]*\./,s));
 });
