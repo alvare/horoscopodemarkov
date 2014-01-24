@@ -36,7 +36,7 @@
                    heads (:heads accum)
                    bodys (:bodys accum)]
                (recur {:heads (assoc heads pfx (conj (get heads pfx []) sfx))
-                       :bodys (merge-with conj bodys (build-markov-model g prefix-length))}
+                       :bodys (merge-with concat bodys (build-markov-model g prefix-length))}
                       (next token-groups)))
              accum))]
     (build-model {:heads {} :bodys {}} (seq tokens))))

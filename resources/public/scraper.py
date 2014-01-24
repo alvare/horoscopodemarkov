@@ -5,7 +5,7 @@ import requests
 import codecs
 
 results = []
-for strdate in [(date.today() - timedelta(a)).strftime("%d%m%Y") for a in range(5)]:
+for strdate in [(date.today() - timedelta(a) - timedelta(10)).strftime("%d%m%Y") for a in range(20)]:
   r = requests.get("http://horoscopo.abc.es/signos-zodiaco-geminis/prediccion-" + strdate + ".html")
 
   print r.status_code
@@ -13,5 +13,5 @@ for strdate in [(date.today() - timedelta(a)).strftime("%d%m%Y") for a in range(
     soup = BeautifulSoup(r.text)
     results.append(unicode(soup.find("div","texto").get_text()))
 
-with codecs.open("lola.json", "w", "utf-8") as f:
+with codecs.open("data.js", "w", "utf-8") as f:
   f.write(dumps(results))

@@ -6,10 +6,10 @@ horoscopo_de_markov.markov.join = (function join(with$,what){return cljs.core.cl
 horoscopo_de_markov.markov.build_markov_model = (function build_markov_model(tokens,prefix_length){var build_model = (function build_model(accum,token_groups){while(true){
 if(cljs.core.seq.call(null,token_groups))
 {var g = cljs.core.first.call(null,token_groups);var pfx = cljs.core.drop_last.call(null,g);var sfx = cljs.core.last.call(null,g);{
-var G__4802 = cljs.core.assoc.call(null,accum,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,accum,pfx,cljs.core.PersistentVector.EMPTY),sfx));
-var G__4803 = cljs.core.next.call(null,token_groups);
-accum = G__4802;
-token_groups = G__4803;
+var G__4744 = cljs.core.assoc.call(null,accum,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,accum,pfx,cljs.core.PersistentVector.EMPTY),sfx));
+var G__4745 = cljs.core.next.call(null,token_groups);
+accum = G__4744;
+token_groups = G__4745;
 continue;
 }
 } else
@@ -30,10 +30,10 @@ horoscopo_de_markov.markov.build_markov_chain = (function build_markov_chain(mod
 horoscopo_de_markov.markov.build_markov_model_sentence = (function build_markov_model_sentence(tokens,prefix_length){var build_model = (function build_model(accum,token_groups){while(true){
 if(cljs.core.seq.call(null,token_groups))
 {var g = cljs.core.first.call(null,token_groups);var pfx = cljs.core.take.call(null,prefix_length,g);var sfx = cljs.core.nth.call(null,g,prefix_length,"");var heads = new cljs.core.Keyword(null,"heads","heads",1113055749).cljs$core$IFn$_invoke$arity$1(accum);var bodys = new cljs.core.Keyword(null,"bodys","bodys",1107816067).cljs$core$IFn$_invoke$arity$1(accum);{
-var G__4804 = new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"heads","heads",1113055749),cljs.core.assoc.call(null,heads,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,heads,pfx,cljs.core.PersistentVector.EMPTY),sfx)),new cljs.core.Keyword(null,"bodys","bodys",1107816067),cljs.core.merge_with.call(null,cljs.core.conj,bodys,horoscopo_de_markov.markov.build_markov_model.call(null,g,prefix_length))], null);
-var G__4805 = cljs.core.next.call(null,token_groups);
-accum = G__4804;
-token_groups = G__4805;
+var G__4746 = new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"heads","heads",1113055749),cljs.core.assoc.call(null,heads,pfx,cljs.core.conj.call(null,cljs.core.get.call(null,heads,pfx,cljs.core.PersistentVector.EMPTY),sfx)),new cljs.core.Keyword(null,"bodys","bodys",1107816067),cljs.core.merge_with.call(null,cljs.core.concat,bodys,horoscopo_de_markov.markov.build_markov_model.call(null,g,prefix_length))], null);
+var G__4747 = cljs.core.next.call(null,token_groups);
+accum = G__4746;
+token_groups = G__4747;
 continue;
 }
 } else
