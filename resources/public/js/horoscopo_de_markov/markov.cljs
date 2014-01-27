@@ -1,8 +1,5 @@
 (ns horoscopo-de-markov.markov)
 
-(defn join [with what]
-  (.join (clj->js what) with))
-
 (defn build-markov-model
   [tokens prefix-length]
   "Given a collection of tokens, builds a map of prefixes of length prefix-length to suffixes."

@@ -2,15 +2,144 @@
 <html>
 
   <head>
-    <title></title>
-    <script src="data.js"></script>
+    <title>Horoscopo de Markov</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
   </head>
 
-  <body>
+  <style>
+    .message p {font-size: 15.5px;}
+    .list {margin-bottom: 30px;}
+    #advanced {color: #999;}
+html,
+      body {
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+      }
 
-  <script src="js/goog/base.js"></script>
-  <script src="js/cljs.js"></script>
-  <script type="text/javascript">goog.require("horoscopo_de_markov.core");</script>
+      /* Wrapper for page content to push down footer */
+      #wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -60px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #push,
+      #footer {
+        height: 60px;
+      }
+      #footer {
+        background-color: #f5f5f5;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+      @media (max-width: 767px) {
+        #footer {
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+  </style>
+
+  <body>
+    <div id="wrap">
+      <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Project name</a>
+          </div>
+          <div class="">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="page-header">
+          <h1>Hor&oacute;scopo de Markov <small>en ClojureScript</small></h1>
+        </div>
+
+        <div class="btn-group list">
+          <button type="button" class="btn btn-default" data-signo="aries">Aries</button>
+          <button type="button" class="btn btn-default" data-signo="tauro">Tauro</button>
+          <button type="button" class="btn btn-default" data-signo="geminis">G&eacute;minis</button>
+          <button type="button" class="btn btn-default" data-signo="cancer">C&aacute;ncer</button>
+          <button type="button" class="btn btn-default" data-signo="leo">Leo</button>
+          <button type="button" class="btn btn-default" data-signo="virgo">Virgo</button>
+          <button type="button" class="btn btn-default" data-signo="libra">Libra</button>
+          <button type="button" class="btn btn-default" data-signo="escorpio">Escorpio</button>
+          <button type="button" class="btn btn-default" data-signo="sagitario">Sagitario</button>
+          <button type="button" class="btn btn-default" data-signo="capricornio">Capricornio</button>
+          <button type="button" class="btn btn-default" data-signo="acuario">Acuario</button>
+          <button type="button" class="btn btn-default" data-signo="piscis">Piscis</button>
+        </div>
+
+        <blockquote class="message">
+          <p id="out"></p>
+        </blockquote>
+
+        <p><a id="advanced" href="#">Advanced</a></p>
+
+        <form id="controls" class="hidden form-inline" role="form">
+          <div class="form-group">
+            <label for="slen" class="sr-only">Sentence count</label>
+            <input type="text" class="form-control" id="slen" value="5">
+            <span class="help-block">Example: 6, 10</span>
+          </div>
+          <div class="form-group">
+            <label for="plen" class="sr-only">Password</label>
+            <input class="form-control" id="plen" value="2">
+            <span class="help-block">Values beyond 4 don't really work.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted">Hecho por <a href="https://github.com/alvare">alvare</a>. Gracias a <a href="http://getbootstrap.com/">Bootstrap</a> y <a href="https://github.com/clojure/clojurescript">ClojureScript</a>.</p>
+      </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="data.js"></script>
+    <!--<script src="js/goog/base.js"></script>
+    <script src="js/cljs.js"></script>
+    <script type="text/javascript">goog.require("horoscopo_de_markov.core");</script>-->
+
+    <script src="cljs-min.js"></script>
+    <script>
+      function loadgen(signo){
+        var slen = $("#slen").val();
+        var plen = $("#plen").val();
+        var markov = horoscopo_de_markov.core.gen_markov(parseInt(plen), parseInt(slen), signo);
+        $("#out").html(markov);
+        $("[data-signo=\"" + signo + "\"]").siblings().removeClass("active");
+        $("[data-signo=\"" + signo + "\"]").addClass("active");
+      }
+
+      // Controls functionalities
+      $(".list").children().on("click", function(){
+        loadgen($(this).data("signo"));
+      });
+      $("#advanced").on("click", function(){
+        $("#controls").toggleClass("hidden");
+      });
+
+      // Initial load
+      var signos = $(".list").children().map(function(){return $(this).data("signo")});
+      loadgen(signos[Math.floor(Math.random()*signos.length)]);
+    </script>
   </body>
 
 </html>
