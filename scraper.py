@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
-from json import dumps
 import requests
 import codecs
 
@@ -9,13 +8,18 @@ signos = ["aries", "tauro", "geminis", "cancer", "leo", "virgo", "libra" ,"escor
 
 for signo in signos:
   print signo
-  for strdate in [(date.today() - timedelta(a) - timedelta(10)).strftime("%d%m%Y") for a in range(5)]:
-    r = requests.get("http://horoscopo.abc.es/signos-zodiaco-" + signo + "/prediccion-" + strdate + ".html", timeout=10)
+  for strdate in [(date.today() - timedelta(a)).strftime("%d%m%Y") for a in range(20)]:
+    try:
+      r = requests.get("http://horoscopo.abc.es/signos-zodiaco-" + signo + "/prediccion-" + strdate + ".html", timeout=10)
 
-    print r.status_code
-    if(r.status_code == 200):
-      soup = BeautifulSoup(r.text)
-      results.append(unicode(soup.find("div","texto").get_text()))
+      print r.status_code
+      if(r.status_code == 200):
+        soup = BeautifulSoup(r.text)
+        results.append(unicode(soup.find("div","texto").get_text()))
+    except requests.exceptions.Timeout:
+      print "TIMEOUT"
+    except:
+      pass
 
-  with codecs.open("data/" + signo + ".json", "w", "utf-8") as f:
-    f.write(dumps(results))
+  with codecs.open("data/" + signo + ".data", "w", "utf-8") as f:
+    f.write(";;;".join(results))
