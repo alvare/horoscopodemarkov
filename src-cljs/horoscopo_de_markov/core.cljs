@@ -1,5 +1,5 @@
 (ns horoscopo-de-markov.core
-  (:use [horoscopo-de-markov.markov :only [build-markov-model-sentence build-markov-chain-sentence tokenize-str]]))
+  (:require [horoscopo-de-markov.markov :as markov]))
 
 (defn join [with what]
   (.join (clj->js what) with))
@@ -11,12 +11,11 @@
   (for [kv (:bodys m)]
     (count (val kv))))
 
-(defn ^:export gen-markov [plen len sign]
-  (let [tokens (tokenize-str (join " " (aget js/DATA sign)))
-        prefix-length plen
-        model (build-markov-model-sentence tokens prefix-length)
-        prefix (:head model)
-        chain (build-markov-chain-sentence model)]
+(defn ^:export gen-markov [prefix-length sentence-count sign]
+  (let [tokens (markov/tokenize-str (join " " (aget js/DATA sign)))
+        model (markov/build-markov-model tokens prefix-length)
+        chain (markov/build-markov-chain model)]
     (do
-      (log (frequencies (chaining model)))
-      (join " " (flatten (take len chain))))))
+      ;(log (frequencies (chaining model)))
+      (log model)
+      (join " " (flatten (take sentence-count chain))))))
