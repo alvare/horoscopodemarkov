@@ -11,11 +11,20 @@
   (for [kv (:bodys m)]
     (count (val kv))))
 
-(defn ^:export gen-markov [prefix-length sentence-count sign]
-  (let [tokens (markov/tokenize-str (join " " (aget js/DATA sign)))
-        model (markov/build-markov-model tokens prefix-length)
-        chain (markov/build-markov-chain model)]
+(defn timy [text prev]
+  (let [t (.now js/Date)]
     (do
-      ;(log (frequencies (chaining model)))
-      (log model)
+      (log (str text (-  t prev)))
+      t)))
+
+(defn ^:export gen-markov [prefix-length sentence-count sign]
+  (let [t1 (timy "Start: " (.now js/Date))
+        tokens (markov/tokenize-str (join " " (aget js/DATA sign)))
+        t2 (timy "Tokens: " t1)
+        model (markov/build-markov-model2 tokens prefix-length)
+        t3 (timy "Model: " t2)
+        chain (markov/build-markov-chain model)
+        t4 (timy "Chain: " t3)]
+    (do
+      (log (frequencies (chaining model)))
       (join " " (flatten (take sentence-count chain))))))

@@ -9,15 +9,28 @@
   (map (partial re-seq #"\S+") (re-seq #"[^.]*\." s)))
 
 (defn process-tail
-  [tokens prefix-length]
+  [model-body tokens prefix-length]
   "Partition the tokens in n-length collections and assoc them recursively."
-  (loop [accum {} token-g (partition (inc prefix-length) 1 tokens)]
+  (loop [accum model-body token-g (partition (inc prefix-length) 1 tokens)]
     (if (seq token-g)
       (let [g (first token-g)
             pfx (drop-last g)
             sfx (last g)]
-        (recur (merge-with concat-v accum {pfx [sfx]}) (next token-g)))
+        (recur (assoc accum pfx (conj (accum pfx) sfx)) (next token-g)))
       accum)))
+
+(defn build-markov-model2
+  [token-sentences prefix-length]
+  "Given a collection of collections of collections of tokens, builds a map of :heads and :bodys"
+  (loop [model {:heads {} :bodys {}} ts token-sentences]
+    (if (seq ts)
+      (let [tokens (first ts)
+            head (take prefix-length tokens)
+            head-pfx (nth tokens prefix-length "")
+            model-head (assoc (model :heads) head (conj ((model :heads) head) head-pfx))
+            model-body (process-tail (model :bodys) tokens prefix-length)]
+        (recur {:heads model-head :bodys model-body} (next ts)))
+      model)))
 
 (defn build-markov-model-sentence
   [prefix-length model tokens]

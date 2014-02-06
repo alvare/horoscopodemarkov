@@ -14,8 +14,7 @@
                    :compiler {:output-to "resources/public/js/cljs.js"
                               :output-dir "resources/public/js"
                               :optimizations :none
-                              :pretty-print true
-                              :source-map "resources/public/js/cljs.js.map"}}
+                              :pretty-print true}}
              :prod {
                     :source-paths ["src-cljs"]
                     :compiler {:output-to "resources/public/cljs-min.js"
