@@ -5,7 +5,7 @@
 
 (defn tokenize-str [s]
   "Forms a nested list like:
-  (('Header' 'is' 'like.') ('Main' 'body' 'cliche.'))"
+  (('Group' 'sentences' 'like' 'this.') ('Separe' 'words.'))"
   (map (partial re-seq #"\S+") (re-seq #"[^.]*\." s)))
 
 (defn process-tail
@@ -19,7 +19,7 @@
         (recur (assoc accum pfx (conj (accum pfx) sfx)) (next token-g)))
       accum)))
 
-(defn build-markov-model2
+(defn build-markov-model
   [token-sentences prefix-length]
   "Given a collection of collections of collections of tokens, builds a map of :heads and :bodys"
   (loop [model {:heads {} :bodys {}} ts token-sentences]
@@ -31,20 +31,6 @@
             model-body (process-tail (model :bodys) tokens prefix-length)]
         (recur {:heads model-head :bodys model-body} (next ts)))
       model)))
-
-(defn build-markov-model-sentence
-  [prefix-length model tokens]
-  "Given a map with :heads and :bodys and a collection of tokens, builds a map of prefixes of length prefix-length to suffixes."
-  (let [head (take prefix-length tokens)
-        head-pfx (nth tokens prefix-length "")
-        model-head (merge-with concat-v (model :heads) {head [head-pfx]})
-        model-body (merge-with concat-v (model :bodys) (process-tail tokens prefix-length))]
-    {:heads model-head :bodys model-body}))
-
-(defn build-markov-model
-  [tokens prefix-length]
-  "Given a collection of collections of collections of tokens, builds a map of :heads and :bodys"
-  (reduce (partial build-markov-model-sentence prefix-length) {:heads {} :bodys {}} tokens))
 
 (defn build-markov-chain-sentence
   [model prefix]

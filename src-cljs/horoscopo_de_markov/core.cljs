@@ -21,7 +21,7 @@
   (let [t1 (timy "Start: " (.now js/Date))
         tokens (markov/tokenize-str (join " " (aget js/DATA sign)))
         t2 (timy "Tokens: " t1)
-        model (markov/build-markov-model2 tokens prefix-length)
+        model (markov/build-markov-model tokens prefix-length)
         t3 (timy "Model: " t2)
         chain (markov/build-markov-chain model)
         t4 (timy "Chain: " t3)]
