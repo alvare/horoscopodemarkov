@@ -19,4 +19,4 @@
                     :source-paths ["src-cljs"]
                     :compiler {:output-to "resources/public/cljs-min.js"
                                :optimizations :advanced
-                               :pretty-print true}}}})
+                               :pretty-print false}}}})

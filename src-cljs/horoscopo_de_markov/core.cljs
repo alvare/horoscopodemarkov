@@ -19,7 +19,7 @@
 
 (defn ^:export gen-markov [prefix-length sentence-count sign]
   (let [t1 (timy "Start: " (.now js/Date))
-        tokens (markov/tokenize-str (join " " (aget js/DATA sign)))
+        tokens (markov/tokenize-str (str js/EXTRA (join " " (aget js/DATA sign))))
         t2 (timy "Tokens: " t1)
         model (markov/build-markov-model tokens prefix-length)
         t3 (timy "Model: " t2)
